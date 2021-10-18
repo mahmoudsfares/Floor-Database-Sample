@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:floor/floor.dart';
 import 'package:floor_db_sample/data/person.dart';

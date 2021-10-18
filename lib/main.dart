@@ -1,8 +1,9 @@
 import 'package:floor_db_sample/data/app_db.dart';
 import 'package:floor_db_sample/data/person.dart';
-import 'package:floor_db_sample/view_model/my_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'my_controller.dart';
 
 Future<void> main() async {
   // instantiate database in the entry point of the app to use it later
@@ -13,24 +14,24 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  MyViewModel viewModel = MyViewModel();
+
+  MyController viewModel = Get.put(MyController());
 
   final nameTfController = TextEditingController();
   final phoneTfController = TextEditingController();
   final searchTfController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-
-    // as adding new data to the database returns nothing, we just need to listen to
-    // the stream broadcast to show a snackbar to the user that confirms whether the new
-    // data was added properly or not
+  void initState() {
+    super.initState();
+    // as adding new data to the database returns nothing,
+    // we just need to listen to the stream to show a snackbar
+    // that confirms whether the new data was added properly or not
     viewModel.addStream.listen((event) {
       if (event == 0) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -42,7 +43,10 @@ class _MyAppState extends State<MyApp> {
         ));
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       body: SafeArea(
